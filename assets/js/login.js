@@ -40,25 +40,23 @@ $(function () {
     //监听登录按钮
     $('#form_login').on('submit', function (e) {
         e.preventDefault();
-        var data = {
-            username: $('#form_reg input[name=username]').val(),
-            password: $('#form_reg input[name=password]').val(),
-        }
+        var data =$(this).serialize();
         // 发送post请求
         $.ajax({
             type: 'post',
             url: '/api/login',
-            data: $(this).serialize(),
+            data: data,
             success: function (res) {
                 if (res.code != 0) {
-                    return layer.msg(res.message);;
+                    return layer.msg(res.message);
                 }
                 layer.msg('登录成功');
                 // 将登录成功之后得到 token 字符串 ，存在localStorage
                 localStorage.setItem("token", res.token);
                 // 跳转到首页
-                location.href='./index.html'
+                location.href='index.html';
            }
         })
+
     })
 })
