@@ -1,7 +1,20 @@
 $(function () {
     var layer = layui.layer;
     getUserIofo();
-    // 获取用户基本信息
+   
+    // 退出按钮
+    $('#logoutBtn').click(function () {
+        layer.confirm('确认退出登录', {
+            icon: 3,
+            title: '提示' //可以无限个按钮
+        }, function (index, layero) {
+            localStorage.removeItem('token');
+            location.href = 'login.html';
+            layer.close(index)
+        });
+    })
+})
+ // 获取用户基本信息
     function getUserIofo() {
         $.ajax({
             type: 'get',
@@ -11,7 +24,7 @@ $(function () {
             },
             success: function (res) {
                 if (res.code != 0) {
-                    return layer.msg('获取用户信息失败！    ')
+                    return layer.msg('获取用户信息失败！')
                 }
                 // 成功之后拿到信息渲染页面
                 renderAvatar(res.data);
@@ -26,7 +39,7 @@ $(function () {
         $('#welcome').html('欢迎' + name);
         // 3.设置头像
         if (user.user_pic) {
-            $('.layui-nav-img').attr('src', user.user_pic);
+            $('.layui-nav-img').attr('src', user.user_pic).show();
             $('.text-avatar').hide();
         } else {
             $('.layui-nav-img').hide();
@@ -34,15 +47,3 @@ $(function () {
             $('.text-avatar').text(name[0].toUpperCase());
         }
     }
-    // 退出按钮
-    $('#logoutBtn').click(function () {
-        layer.confirm('确认退出登录', {
-            icon: 3,
-            title: '提示' //可以无限个按钮
-        }, function (index, layero) {
-            localStorage.removeItem('token');
-            location.href = 'login.html';
-            layer.close(index)
-        });
-    })
-})
